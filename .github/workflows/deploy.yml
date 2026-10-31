@@ -32,7 +32,7 @@ jobs:
       - name: Collect the site
         run: |
           mkdir _site
-          cp -r index.html 404.html style.css icons.css main.js feed.xml favicon.ico favicon.svg apple-touch-icon.png og.png blog fonts media _site/
+          cp -r index.html 404.html style.css icons.css main.js feed.xml favicon.ico favicon.svg apple-touch-icon.png preview.png blog fonts media _site/
 
       - uses: actions/configure-pages@v5
 
