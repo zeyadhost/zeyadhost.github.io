@@ -1,66 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zeyad</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              // Defining strict black/white palette references if needed
-              canvas: '#ffffff',
-              ink: '#000000',
-            }
-          },
-        },
-      }
-    </script>
-    <style>
-      body {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      /* Ensure the body background matches the theme */
-      html.dark body {
-        background-color: #000000;
-        color: #ffffff;
-      }
-      /* Custom selection color for that 'research lab' feel */
-      ::selection {
-        background: #000;
-        color: #fff;
-      }
-      html.dark ::selection {
-        background: #fff;
-        color: #000;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
-  <body class="bg-white text-black font-sans selection:bg-black selection:text-white">
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>zeyad</title>
+    <meta name="description" content="Zeyad Bekhet (zeyadhost): hardware, games and tools, from Egypt." />
+    <link rel="icon" href="data:," />
+    <link rel="preload" href="fonts/mansalva.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/dejavu-sans-mono.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="alternate" type="application/rss+xml" title="zeyad" href="feed.xml" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="icons.css" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>zeyad</h1>
+
+      <section class="intro">
+        <div class="intro-text">
+          <h2>Introduction</h2>
+          <ul>
+            <li>whoami - zeyad bekhet, aka zeyadhost</li>
+            <li>
+              uptime -
+              <span class="age" tabindex="0" aria-describedby="age-exact">
+                <span class="age-n">13</span> years old
+                <span class="age-tip" id="age-exact" role="tooltip">13.000000000000000000</span>
+              </span>
+            </li>
+            <li>location - egypt</li>
+            <li>online - since november 2022</li>
+          </ul>
+          <p>
+            here i am,
+            <span class="age" data-since="6" tabindex="0" aria-describedby="since-exact"><span class="age-n">7</span> years<span class="age-tip" id="since-exact" role="tooltip">7.000000000000000000</span></span>
+            later, still doing what i fell in love with at 6: computers. my father taught me my first
+            technical terms and how to work with them, and i've kept teaching myself ever since.
+            computers and circuits are my comfort zone: my work, my hobby, and the thing i genuinely
+            love doing. now i build hardware, full-stack tools, games, and whatever comes next.
+          </p>
+        </div>
+        <aside class="notes" aria-label="Right now" hidden></aside>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <ul>
+          <li>c, c++ - firmware and embedded usb</li>
+          <li>python - bots, tools and visualizers</li>
+          <li>typescript, javascript - web apps and browser games</li>
+          <li>html, css - interfaces, from scratch</li>
+          <li>rust - tinkering</li>
+          <li>kicad - pcb design</li>
+          <li>arduino - microcontrollers and controllers</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Hardware</h2>
+        <ul>
+          <li><a href="https://github.com/zeyadhost/verispeed">verispeed</a> - 3-key macropad, kicad pcb and a 3d case</li>
+          <li><a href="https://github.com/zeyadhost/terminaldeck">terminaldeck</a> - terminal game launcher with an arduino uno as the controller</li>
+          <li><a href="https://github.com/zeyadhost/hp-prodesk-600-g3-skylake-monterey-opencore">prodesk-opencore</a> - macos monterey on an hp prodesk 600 g3, as an opencore efi</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Games</h2>
+        <ul>
+          <li><a href="https://github.com/zeyadhost/strata">strata</a> - multiplayer mining game in the browser, made for ember jam</li>
+          <li><a href="https://donteatthis.vercel.app">hazardous atelier</a> - a bakery of pastries made from absurd ingredients</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Software</h2>
+        <ul>
+          <li><a href="https://pfetch.me">pfetch.me</a> - bio-link site where every detail is yours to change</li>
+          <li><a href="https://github.com/zeyadhost/cortex-bot">cortex-bot</a> - discord bot for server setup, api testing and reverse engineering</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Currently</h2>
+        <ul>
+          <li>verispeed - the pcb, the firmware and the case</li>
+          <li>cortex-bot - a discord bot in python</li>
+        </ul>
+      </section>
+
+      <section id="writing">
+        <h2>Writing</h2>
+        <ul>
+          <li>2026-10-31 - <a href="blog/vibecoding-a-gameboy-emulator/">vibecoding a gameboy emulator</a></li>
+        </ul>
+        <p><a href="blog/">all posts</a> - <a href="feed.xml">rss</a></p>
+      </section>
+
+      <section>
+        <h2>Contact info</h2>
+        <ul>
+          <li>email - <a href="mailto:zeyadhost@duck.com">zeyadhost@duck.com</a></li>
+          <li>github - <a href="https://github.com/zeyadhost">github.com/zeyadhost</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Shortcuts</h2>
+        <ul>
+          <li>g - open my github</li>
+          <li>e - write me an email</li>
+        </ul>
+      </section>
+    </main>
+  </body>
 </html>
