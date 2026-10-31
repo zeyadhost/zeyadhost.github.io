@@ -135,7 +135,9 @@ const head = ({ title, description, root, path, type = 'website' }) => `<!doctyp
     <meta property="og:description" content="${esc(description)}" />
     <meta property="og:url" content="${SITE_URL}/${path}" />
     <link rel="canonical" href="${SITE_URL}/${path}" />
-    <link rel="icon" href="data:," />
+    <link rel="icon" href="${root}favicon.ico" sizes="32x32" />
+    <link rel="icon" href="${root}favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="${root}apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="${SITE_NAME}" href="${root}feed.xml" />
     <link rel="preload" href="${root}fonts/dejavu-sans-mono.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="${root}style.css" />
