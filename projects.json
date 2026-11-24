@@ -1,0 +1,260 @@
+{
+  "work": [
+    {
+      "slug": "cupertab",
+      "name": "cupertab",
+      "title": "Cupertab",
+      "tagline": "iOS 4 in a browser tab",
+      "date": "2026-11",
+      "status": "live demo, needs your own firmware",
+      "line": "a port of touchhle that runs in a web browser. it started as a fork of touchhle. early iphone apps run in a tab, and ios 4 boots from an ipsw you supply.",
+      "summary": "Cupertab is a port of the touchHLE emulator that runs in a web browser: early iPhone apps run in a tab, and iOS 4 boots from an IPSW you supply.",
+      "note": "the demo needs your own files: an iphone os 4 .ipsw plus its root filesystem key, or a decrypted .ipa you own. it ships no apple files and nothing gets uploaded.",
+      "thumb": { "src": "media/p/cupertab/thumb.webp", "alt": "ios 4.2.1 on the lock screen inside a dark browser page, with the status line running iPhone1,2_4.2.1_8C148_Restore.ipsw above it" },
+      "images": [
+        { "src": "media/p/cupertab/lock-screen.webp", "alt": "the ios 4.2.1 lock screen with slide to unlock, running in a browser tab, under the status line running iPhone1,2_4.2.1_8C148_Restore.ipsw", "caption": "ios 4.2.1 for the iphone 3g, booted from an ipsw in a chromium tab." },
+        { "src": "media/p/cupertab/page.webp", "alt": "the cupertab page: a root filesystem key field and three green buttons, choose .ipa, boot ios 4 .ipsw and add .ipa to home screen", "caption": "the page before you pick your files." }
+      ],
+      "body": [
+        "cupertab is a port of [touchhle](https://github.com/touchHLE/touchHLE) that runs in a web browser. it started as a fork of touchhle. touchhle is a high-level emulator for early ios apps: it runs the app's own arm code and swaps ios for its own versions of the system frameworks. cupertab builds it to webassembly, and it can also boot ios 4 from an ipsw you supply, so apple's own springboard runs in the tab.",
+        "it was called touchhle-web until november 2026. touchhle was started by hikari_no_yume, and many other people have worked on it since. please don't report problems with the web build to upstream touchhle, because they don't work on cupertab.",
+        "when a boot reaches the lock screen, the page saves a snapshot of it. the next time you pick the same ipsw with the same key, the lock screen shows up in about a second in chromium."
+      ],
+      "facts": [
+        ["runs", "apps for iphone os 2.x, 3.x and ios 4.0.x"],
+        ["boots", "ios 4.2.1 for the iphone 3g (8C148), the only firmware tested so far"],
+        ["cpu", "a rust interpreter, plus an opt-in webassembly jit (?jit=on)"],
+        ["guest memory", "a 1 GiB window per process"],
+        ["memory needed", "about 1.2 GB to start, past 2 GB to boot ios 4"],
+        ["tested in", "desktop chromium"],
+        ["based on", "touchhle by hikari_no_yume and contributors"],
+        ["licence", "mpl 2.0 for the source, gpl 3 or later for binaries"]
+      ],
+      "links": [
+        { "label": "try it", "href": "https://cupertab.dino.icu/" },
+        { "label": "source", "href": "https://github.com/zeyadhost/cupertab" }
+      ]
+    },
+    {
+      "slug": "picogb",
+      "name": "picogb",
+      "title": "PicoGB",
+      "tagline": "a Game Boy emulator for the Hack Club Sprig",
+      "date": "2026-10",
+      "status": "runs on the real sprig",
+      "line": "a game boy and game boy color emulator for the hack club sprig, written from scratch. blargg's cpu and timing tests pass on the real hardware.",
+      "summary": "A Game Boy and Game Boy Color emulator for the Hack Club Sprig (RP2040), written from scratch. Blargg's CPU and timing test ROMs pass on the real hardware.",
+      "thumb": { "src": "media/p/picogb/thumb.webp", "alt": "super mario land running on the sprig's small screen, photographed on a desk next to a laptop keyboard" },
+      "images": [
+        { "src": "media/p/picogb/mario-land.webp", "alt": "super mario land, world 1-1, on the sprig's screen", "caption": "super mario land on the real sprig." },
+        { "src": "media/p/picogb/blargg.webp", "alt": "four test rom screens: cpu_instrs passed all tests, instr_timing passed, mem_timing passed all tests, halt bug passed", "caption": "blargg's test roms, captured on the sprig.", "pixelated": true },
+        { "src": "media/p/picogb/menu.webp", "alt": "the picogb game list on the sprig: akumanor gaiden, two pokemon hacks and super mario land", "caption": "the game list, with the library on the sd card." },
+        { "src": "media/p/picogb/sprig-and-laptop.webp", "alt": "the sprig running mario in front of a laptop", "caption": "the sprig in front of the chat that built it." }
+      ],
+      "body": [
+        "picogb runs game boy and game boy color games on the [hack club sprig](https://sprig.hackclub.com/), a handheld with a raspberry pi pico (rp2040) inside, with no extra hardware. it uses the arduino core and sdfat, but no emulator, graphics or game libraries, and no nintendo code.",
+        "one core runs the emulator, the other scales the 160x144 picture to the 160x128 screen and sends it out. the game library, saves and save states live on the sd card, and a web page adds games from a pc.",
+        "the whole story, with the bugs i found by playing, is in [the blog post](blog/vibecoding-a-gameboy-emulator/)."
+      ],
+      "table": {
+        "caption": "test results, from the readme",
+        "head": ["test rom", "pc", "sprig"],
+        "rows": [
+          ["blargg cpu_instrs", "passed", "passed"],
+          ["blargg instr_timing", "passed", "passed"],
+          ["blargg mem_timing", "passed", "passed"],
+          ["blargg halt_bug", "passed", "passed"],
+          ["dmg-acid2", "pixel-exact", "pixel-exact"],
+          ["cgb-acid2", "pixel-exact", "not run"]
+        ]
+      },
+      "facts": [
+        ["hardware", "hack club sprig, rp2040 at 250 MHz"],
+        ["frame budget", "16.7 ms"],
+        ["frame time", "about 6 ms for game boy games, 7 to 11 ms for color games"],
+        ["pokemon pure blue", "15.0 ms to 10.4 ms per frame"],
+        ["games", "up to 8 MB: 1.8 MB in flash, the rest read from the sd card in 4 KB pages"],
+        ["save states", "4 slots, plus a resume point when you quit"],
+        ["regression check", "719 homebrew games matched frame by frame after the speed work"]
+      ],
+      "links": [
+        { "label": "source", "href": "https://github.com/zeyadhost/picogb" },
+        { "label": "blog post", "href": "blog/vibecoding-a-gameboy-emulator/" }
+      ]
+    },
+    {
+      "slug": "plistcheck",
+      "name": "plistcheck",
+      "title": "plistcheck",
+      "tagline": "an OpenCore config checker in the browser",
+      "date": "2026-11",
+      "status": "live demo",
+      "line": "checks an opencore config.plist against the hardware you pick, in the browser. the file never leaves your device.",
+      "summary": "plistcheck runs OpenCore's official validator and checks for your hardware on a config.plist, all in the browser.",
+      "note": "if you don't have a config, the page has a \"try an example\" button.",
+      "thumb": { "src": "media/p/plistcheck/thumb.webp", "alt": "plistcheck with the example config loaded: errors found, 1 error, 9 warnings and 1 note, and the first four warnings" },
+      "images": [
+        { "src": "media/p/plistcheck/overview.webp", "alt": "plistcheck with the example coffee lake config loaded: the hardware form on the left, and on the right errors found, 1 error, 9 warnings and 1 note, and the first four warnings", "caption": "the built-in example config after a check." },
+        { "src": "media/p/plistcheck/report.webp", "alt": "the whole diagnostics panel for the example config: errors found, 1 error, 9 warnings and 1 note, eleven findings each with its config path, ocvalidate output passed, and a not checked section", "caption": "the whole report for the example config." }
+      ],
+      "body": [
+        "pick an xml or binary plist, choose your hardware and target macos, and plistcheck shows every finding with a link to its source. the official opencore 1.0.8 validator is compiled from unchanged sources to webassembly, and the hardware rules run in python through pyodide, all inside a browser worker.",
+        "a valid plist can still fail to boot, so keep a known-good efi backup. the page shows what it could not check."
+      ],
+      "facts": [
+        ["validator", "official opencore 1.0.8 ocvalidate, compiled to webassembly"],
+        ["runtime", "pyodide 0.27.7, about 16 MB on the first check"],
+        ["desktop rules", "intel haswell to comet lake, amd zen"],
+        ["laptop rules", "intel haswell to ice lake"],
+        ["limits", "2 MB per file, 8 seconds per check"],
+        ["server", "none, it all runs in a browser worker"]
+      ],
+      "links": [
+        { "label": "try it", "href": "https://zeyad.is-a.dev/plistcheck/" },
+        { "label": "source", "href": "https://github.com/zeyadhost/plistcheck" }
+      ]
+    },
+    {
+      "slug": "verispeed",
+      "name": "verispeed",
+      "title": "Verispeed",
+      "tagline": "a 12-key MIDI controller board",
+      "date": "2026-10",
+      "status": "designed, the board is not built yet",
+      "line": "a midi controller with 12 keys, 2 knobs and a screen, on one circuit board with no case. the design passes its checks, but the board is not built yet.",
+      "summary": "A MIDI controller with 12 keys, 2 knobs and a screen, designed in KiCad around an ESP32-S3. The board is designed but not built yet.",
+      "thumb": { "src": "media/p/verispeed/thumb.webp", "alt": "kicad 3d view of the verispeed board: a screen in the middle, a knob on each side and 12 key switches below" },
+      "images": [
+        { "src": "media/p/verispeed/board-3d.webp", "alt": "kicad 3d view of the verispeed board: hack club flag, a 2 inch screen between two knobs, the esp32-s3 module and 12 red key switches", "caption": "kicad's 3d view. there is no photo yet, because the board is not built." },
+        { "src": "media/p/verispeed/pcb-wires.webp", "alt": "the pcb traces of verispeed, red on the top side and blue on the bottom side", "caption": "the traces: red on the top side, blue on the bottom." }
+      ],
+      "body": [
+        "verispeed is one circuit board. the 12 keys are one piano octave, 7 white and 5 black, with the screen in the middle and a knob on each side. it has no speaker: you plug it into a laptop over usb-c and a music program makes the sound.",
+        "the firmware is simple for now. it reads the 12 keys and sends them as midi notes, from middle c to b. it builds, but it has never run on a real board, and it does not use the knobs, the screen or the battery yet."
+      ],
+      "facts": [
+        ["keys", "12 mx-style switches, one octave"],
+        ["knobs", "2 rotary encoders with push buttons"],
+        ["screen", "2 inch, 240 x 320"],
+        ["chip", "esp32-s3 (8 MB flash, 2 MB psram)"],
+        ["power", "usb-c or a 1-cell lipo, 200 mA charger on the board"],
+        ["board", "155 x 99 mm, 2 layers, no case"],
+        ["checks", "erc 0 violations, drc 0 errors (21 silkscreen warnings)"],
+        ["parts", "81.60 usd, without the pcb and shipping (prices from 21 november 2026)"],
+        ["status", "not built, so the firmware has not run on real hardware"]
+      ],
+      "links": [
+        { "label": "source", "href": "https://github.com/zeyadhost/verispeed" }
+      ]
+    },
+    {
+      "slug": "strata",
+      "name": "strata",
+      "title": "Strata",
+      "tagline": "a singleplayer mining game for the browser",
+      "date": "2026-03",
+      "status": "jam game",
+      "line": "a singleplayer mining game for the browser, built with phaser 3 for ember jam. art by coolgirlarts.",
+      "summary": "A singleplayer mining game for the browser, built with Phaser 3 and TypeScript for Ember jam.",
+      "thumb": { "src": "media/p/strata/thumb.webp", "alt": "the miner at the bottom of a shaft dug through dirt into stone, at depth 35, with the hotbar below" },
+      "images": [
+        { "src": "media/p/strata/run.webp", "alt": "strata at depth 36: the miner in a shaft dug through dirt into stone with ore around it, a hotbar with a wood pick, and settings and shop buttons", "caption": "a shaft dug with the wood pick. ores, tiles and the player are by coolgirlarts." }
+      ],
+      "body": [
+        "you dig down through dirt and stone, collect ore and sell it in the shop for better pickaxes. it runs in the browser and is built with vite.",
+        "it has no hosted copy right now. to play it, clone the repo and run npm install, then npm run dev."
+      ],
+      "facts": [
+        ["players", "1"],
+        ["engine", "phaser 3"],
+        ["language", "typescript, built with vite"],
+        ["made for", "ember jam"],
+        ["art", "ores, tiles, gems, player, shop and npcs by coolgirlarts"],
+        ["also", "cursors by aspecsgaming, settings icons by crusenho"]
+      ],
+      "links": [
+        { "label": "source", "href": "https://github.com/zeyadhost/strata" }
+      ]
+    },
+    {
+      "slug": "ios4-uikit",
+      "name": "ios4-uikit",
+      "title": "ios4-uikit",
+      "tagline": "the iOS 4.2.1 UIKit controls, rebuilt for the web",
+      "date": "2026-11",
+      "status": "live gallery",
+      "line": "an interactive web catalog of the ios 4.2.1 uikit controls, rebuilt in css, svg and javascript. it ships no apple binaries, artwork or fonts.",
+      "summary": "An interactive web catalog of the iOS 4.2.1 UIKit controls and their period styles, rebuilt in CSS, SVG and JavaScript.",
+      "thumb": { "src": "media/p/ios4-uikit/thumb.webp", "alt": "the controls section of the gallery: an off and an on switch, a slider, buttons, segmented controls, a page control and progress bars" },
+      "images": [
+        { "src": "media/p/ios4-uikit/controls.webp", "alt": "the controls section: uiswitch, uislider, uibutton, uisegmentedcontrol, uipagecontrol, uiprogressview and uiactivityindicatorview specimens", "caption": "controls, the first of four sections." },
+        { "src": "media/p/ios4-uikit/bars.webp", "alt": "the bars and lists section: navigation bars, toolbars, tab bars and search bars in default, black opaque and black translucent styles", "caption": "bars and lists." }
+      ],
+      "body": [
+        "every specimen is rebuilt in css, svg and javascript, so it is not a screenshot or native uikit. you can drag the switches, select segments and scroll the pickers. the class list comes from the uikit binary in the 8C148 firmware: 626 classes, including private ones, which say what exists but not how it looks.",
+        "it is not pixel-matched against a real phone, and the coverage notes in the repo say what is missing."
+      ],
+      "facts": [
+        ["firmware", "ios 4.2.1 (8C148)"],
+        ["uikit classes found", "626, read from the firmware's dyld cache"],
+        ["sections", "controls, bars and lists, text and pickers, presentation"],
+        ["apple files shipped", "none"]
+      ],
+      "links": [
+        { "label": "try it", "href": "https://zeyad.is-a.dev/ios4-uikit/" },
+        { "label": "source", "href": "https://github.com/zeyadhost/ios4-uikit" }
+      ]
+    },
+    {
+      "slug": "latitude-metal",
+      "name": "latitude 5450 metal",
+      "title": "Latitude 5450 Metal",
+      "tagline": "macOS graphics on an unsupported Intel GPU",
+      "date": "2026-11",
+      "status": "usable, not smooth yet",
+      "line": "metal and a gpu-composited macos desktop on the meteor lake igpu of a dell latitude 5450, a gpu apple never wrote a driver for.",
+      "summary": "Metal and a GPU-composited macOS desktop on the Intel Meteor Lake iGPU of a Dell Latitude 5450, a GPU Apple never wrote a driver for.",
+      "spec": [
+        ["laptop", "dell latitude 5450"],
+        ["igpu", "xe-lpg, 8086:7d45"],
+        ["macos", "tahoe 26.7.2"],
+        ["frames", "25 to 35 fps"]
+      ],
+      "body": [
+        "the stack is intel's open i915 driver running on freebsd's linuxkpi shim inside the macos kernel, with mesa's anv behind metal. windowserver composites on the intel gpu, metal renders, and the accelerated path comes up on a normal usb boot.",
+        "it is built from other people's drivers, retargeted to this gpu: nullmoth, xegfx, arrowwhatever, samwu07's thinkbook stack, i915, linuxkpi and mesa, each listed with its commit in the repo. the cursor leaves trails and frames sit around 25 to 35 fps. porting the arrowwhatever patches is the current work.",
+        "there is no screenshot here yet."
+      ],
+      "facts": [
+        ["laptop", "dell latitude 5450"],
+        ["cpu", "intel core ultra 5 135u (meteor lake-p)"],
+        ["igpu", "xe-lpg, pci 8086:7d45"],
+        ["macos", "tahoe 26.7.2 (25G332)"],
+        ["frame rate", "around 25 to 35 fps"],
+        ["stack", "i915 on freebsd's linuxkpi in the macos kernel, mesa's anv behind metal"]
+      ],
+      "links": [
+        { "label": "source", "href": "https://github.com/zeyadhost/latitude-5450-meteor-lake-macos" }
+      ]
+    }
+  ],
+  "more": [
+    { "name": "terminaldeck", "href": "https://github.com/zeyadhost/terminaldeck", "line": "terminal game launcher with an arduino uno as the controller" },
+    { "name": "prodesk-opencore", "href": "https://github.com/zeyadhost/hp-prodesk-600-g3-skylake-monterey-opencore", "line": "macos monterey on an hp prodesk 600 g3, as an opencore efi" },
+    { "name": "cortex-bot", "href": "https://github.com/zeyadhost/cortex-bot", "line": "python discord bot for server setup, api testing and reverse engineering, early: three commands so far" },
+    { "name": "pfetch.me", "href": "https://pfetch.me", "line": "bio-link site where you can change every detail" },
+    { "name": "hazardous atelier", "href": "https://donteatthis.vercel.app", "line": "a bakery of pastries made from absurd ingredients" }
+  ],
+  "how_i_made_it": {
+    "approved": false,
+    "lines": {
+      "cupertab": "i decide what to build and test every build in the browser myself. claude writes most of the code.",
+      "picogb": "i decided what to build and tested every build on the real sprig. claude wrote most of the code, as the blog post says.",
+      "plistcheck": "i decide what to build and test every build myself. claude writes most of the code.",
+      "verispeed": "i decide what to build and check every design myself. claude writes most of the firmware. nothing is tested on real hardware yet, because the board is not built.",
+      "strata": "i decided what to build and tested every build myself. claude wrote most of the code.",
+      "ios4-uikit": "i decide what to build and test every build myself. claude writes most of the code.",
+      "latitude-metal": "i decide what to build and test every build on the real latitude. claude writes most of the code."
+    }
+  }
+}
