@@ -141,6 +141,170 @@ a:focus-visible {
   color: var(--dim);
 }
 
+.lede {
+  margin: 0;
+  font-size: 1.15em;
+  line-height: 1.45;
+}
+
+.go {
+  margin: 0.6em 0 0;
+}
+
+.go a {
+  padding: 12px 6px;
+  margin: 0 -6px;
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 0.16em;
+}
+
+.go a:hover,
+.go a:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.go a[href]::before,
+.work a[href]::before {
+  display: none;
+}
+
+.work {
+  margin-top: 1.4em;
+}
+
+.work + .work {
+  margin-top: 2.2em;
+}
+
+.work h3 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 400;
+}
+
+.work h3 a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.work h3 .dim {
+  font-size: 0.87em;
+}
+
+.work p {
+  margin: 0.5em 0 0;
+}
+
+.shot {
+  display: block;
+  margin-top: 0.6em;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid #333;
+  background: #0d0d0d;
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3em;
+  padding: 0 2ch;
+  font-size: 0.87em;
+}
+
+.spec li {
+  padding: 0;
+  text-indent: 0;
+}
+
+.spec .dim {
+  display: inline-block;
+  width: 8ch;
+}
+
+@media (min-width: 700px) {
+  .work {
+    display: grid;
+    grid-template-columns: 44% 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "shot head" "shot line" "shot go";
+    column-gap: 2.5ch;
+  }
+
+  .work h3 {
+    grid-area: head;
+  }
+
+  .work .shot {
+    grid-area: shot;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .work p {
+    grid-area: line;
+  }
+
+  .work .go {
+    grid-area: go;
+  }
+}
+
+.note {
+  margin-top: 1em;
+  padding-left: 2ch;
+  border-left: 1px solid #444;
+  color: #cfcfcf;
+}
+
+.prose .facts li {
+  padding-left: 4ch;
+  text-indent: -4ch;
+}
+
+.prose .facts li::before {
+  content: none;
+}
+
+.prose caption {
+  padding-bottom: 0.4em;
+  text-align: left;
+  color: var(--dim);
+}
+
+.prose img.pixelated {
+  image-rendering: pixelated;
+}
+
+.draft {
+  padding-left: 2ch;
+  border-left: 1px dashed #666;
+}
+
+@media (pointer: coarse) {
+  li > a,
+  .notes a,
+  .crumbs a,
+  .post-nav a,
+  .work h3 a {
+    padding-block: 11.5px;
+  }
+
+  main li:has(> a) {
+    padding-block: 11.5px;
+  }
+}
+
 .brand {
   display: inline-block;
   font-family: "Mansalva", cursive;

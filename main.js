@@ -53,16 +53,6 @@ for (const counter of document.querySelectorAll('.age')) {
   });
 }
 
-const shortcuts = {
-  g: () => window.open('https://github.com/zeyadhost', '_blank', 'noopener'),
-  e: () => (location.href = 'mailto:zeyadhost@duck.com'),
-};
-
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
-  shortcuts[e.key.toLowerCase()]?.();
-});
-
 const LASTFM_USER = 'qrexxed';
 const LASTFM_KEY = 'b1bc20c465971c89487dbfd4f4ce7a5e';
 const GITHUB_USER = 'zeyadhost';

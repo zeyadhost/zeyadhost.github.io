@@ -1,5 +1,7 @@
 blog/
+/p/
 feed.xml
+sitemap.xml
 icons.css
 media/icons/chips/
 _site/

@@ -1,14 +1,40 @@
-import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = (process.env.SITE_URL || 'http://localhost:3002').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://zeyad.is-a.dev').replace(/\/$/, '');
+const PREVIEW = process.env.PREVIEW === '1';
 const SITE_NAME = 'zeyad';
 const AUTHOR = 'Zeyad Bekhet';
 const HOME_COUNT = 3;
+const HOME_TITLE = 'Zeyad Bekhet (zeyadhost): emulators, browser tools and circuit boards';
+const HOME_DESCRIPTION = 'Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more, with screenshots, demos and source.';
+const SAME_AS = ['https://github.com/zeyadhost', 'https://x.com/zeyadhost'];
+const { work, more, how_i_made_it: made } = JSON.parse(readFileSync(join(ROOT, 'projects.json'), 'utf8'));
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+function sizeOf(file) {
+  const b = readFileSync(file);
+  if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+    const chunk = b.toString('ascii', 12, 16);
+    if (chunk === 'VP8X') return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
+    if (chunk === 'VP8L') return [1 + (b.readUInt32LE(21) & 0x3fff), 1 + ((b.readUInt32LE(21) >> 14) & 0x3fff)];
+    if (chunk === 'VP8 ') return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+  }
+  if (b.readUInt32BE(0) === 0x89504e47) return [b.readUInt32BE(16), b.readUInt32BE(20)];
+  for (let i = 2; b[0] === 0xff && b[1] === 0xd8 && i < b.length; i += 2 + b.readUInt16BE(i + 2)) {
+    const marker = b[i + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+  }
+  throw new Error(`${file}: cannot read the image size`);
+}
+
+const img = (src, alt, root, { lazy = true, cls } = {}) => {
+  const [width, height] = sizeOf(join(ROOT, src));
+  return `<img${cls ? ` class="${cls}"` : ''} src="${root}${src}" width="${width}" height="${height}" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async" />`;
+};
+
 const slugify = s => s.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function markdown(src, root) {
@@ -21,7 +47,11 @@ function markdown(src, root) {
     const codes = [];
     let s = esc(text).replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
     s = s
-      .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => `<img src="${url(src)}" alt="${alt}" loading="lazy" />`)
+      .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => {
+        const [width, height] = /^(https?:|\/)/i.test(src) ? [] : sizeOf(join(ROOT, src));
+        const size = width ? ` width="${width}" height="${height}"` : '';
+        return `<img src="${url(src)}"${size} alt="${alt}" loading="lazy" decoding="async" />`;
+      })
       .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => `<a href="${url(href)}">${label}</a>`)
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/(^|[^*\w])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
@@ -122,31 +152,42 @@ const posts = readdirSync(join(ROOT, 'posts'))
   })
   .sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 
-const head = ({ title, description, root, path, type = 'website' }) => `<!doctype html>
+const share = name => (existsSync(join(ROOT, 'media', 'share', `${name}.jpg`)) ? name : 'home');
+
+const head = ({ title, description, root, path, type = 'website', image = 'home', home = false }) => `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(description)}" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="canonical" href="${SITE_URL}/${path}" />
     <meta property="og:type" content="${type}" />
     <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:title" content="${esc(title)}" />
     <meta property="og:description" content="${esc(description)}" />
     <meta property="og:url" content="${SITE_URL}/${path}" />
-    <link rel="canonical" href="${SITE_URL}/${path}" />
+    <meta property="og:image" content="${SITE_URL}/media/share/${share(image)}.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${SITE_URL}/media/share/${share(image)}.jpg" />
     <link rel="icon" href="${root}favicon.ico" sizes="32x32" />
     <link rel="icon" href="${root}favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="${root}apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title="${SITE_NAME}" href="${root}feed.xml" />
     <link rel="preload" href="${root}fonts/dejavu-sans-mono.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="${root}fonts/mansalva.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="${root}style.css" />
-    <link rel="stylesheet" href="${root}icons.css" />
+    <link rel="stylesheet" href="${root}icons.css" />${home ? `
+    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Person', name: AUTHOR, url: `${SITE_URL}/`, sameAs: SAME_AS })}</script>
+    <script src="main.js" defer></script>` : ''}
   </head>`;
 
 const page = (opts, body) => `${head(opts)}
   <body>
-    <main class="writing">
+    <main>
       <a class="brand" href="${opts.root}">zeyad</a>
 ${body}
     </main>
@@ -154,12 +195,53 @@ ${body}
 </html>
 `;
 
+const links = (list, root) => list.map(l => `<a href="${/^https?:/.test(l.href) ? l.href : root + l.href}">${esc(l.label)}</a>`).join(' - ');
+
+function projectPage(project, i) {
+  const root = '../../';
+  const prev = work[i - 1];
+  const next = work[i + 1];
+  const [first, ...rest] = project.images || [];
+  const figure = (image, lazy = true) =>
+    `<figure>${img(image.src, image.alt, root, { lazy, cls: image.pixelated ? 'pixelated' : undefined })}<figcaption>${esc(image.caption)}</figcaption></figure>`;
+  const table = project.table
+    ? `<table><caption>${esc(project.table.caption)}</caption><thead><tr>${project.table.head.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${project.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+    : '';
+  const line = made.lines[project.slug];
+  const how = line && (made.approved || PREVIEW)
+    ? `\n          <h2>How i made it</h2>\n          <p${made.approved ? '' : ' class="draft"'}>${esc(line)}${made.approved ? '' : ' <span class="dim">(draft, not on the live site until zeyad approves it)</span>'}</p>`
+    : '';
+  return page(
+    { title: `${project.title}: ${project.tagline} - ${SITE_NAME}`, description: project.summary, root, path: `p/${project.slug}/`, image: project.slug },
+    `      <p class="crumbs"><a href="${root}">home</a> / <a href="${root}#work">work</a> / ${esc(project.name)}</p>
+      <article>
+        <h1 class="post-title">${esc(project.name)}</h1>
+        <p class="post-meta">${project.date} - ${esc(project.status)}</p>
+        <p class="lede">${esc(project.line)}</p>
+        <p class="go">${links(project.links, root)}</p>${project.note ? `\n        <p class="note">${esc(project.note)}</p>` : ''}
+        <div class="prose">
+          ${first ? figure(first, false) : ''}
+${markdown(project.body.join('\n\n'), root)}
+          <h2>Facts</h2>
+          <ul class="facts">
+${project.facts.map(([k, v]) => `            <li><span class="dim">${esc(k)}</span> - ${esc(v)}</li>`).join('\n')}
+          </ul>${table ? `\n          ${table}` : ''}
+          ${rest.map(image => figure(image)).join('\n          ')}${how}
+        </div>
+      </article>
+      <nav class="post-nav" aria-label="More work">
+        <span>${prev ? `prev - <a href="../${prev.slug}/">${esc(prev.name)}</a>` : ''}</span>
+        <span>${next ? `next - <a href="../${next.slug}/">${esc(next.name)}</a>` : ''}</span>
+      </nav>`,
+  );
+}
+
 function postPage(post, i) {
   const root = '../../';
   const newer = posts[i - 1];
   const older = posts[i + 1];
   return page(
-    { title: `${post.title} - ${SITE_NAME}`, description: post.description, root, path: `blog/${post.slug}/`, type: 'article' },
+    { title: `${post.title} - ${SITE_NAME}`, description: post.description, root, path: `blog/${post.slug}/`, type: 'article', image: post.slug },
     `      <p class="crumbs"><a href="${root}">home</a> / <a href="${root}blog/">writing</a></p>
       <article>
         <h1 class="post-title">${esc(post.title)}</h1>
@@ -227,27 +309,61 @@ ${posts
 </rss>
 `;
 
-function updateHome() {
-  const file = join(ROOT, 'index.html');
-  const html = readFileSync(file, 'utf8');
-  const open = '<section id="writing">';
+function workItem(project, i) {
+  const href = `p/${project.slug}/`;
+  const shot = project.thumb
+    ? `<a class="shot" href="${href}" tabindex="-1">${img(project.thumb.src, project.thumb.alt, '', { lazy: i > 0 })}</a>`
+    : `<ul class="shot spec">${project.spec.map(([k, v]) => `<li><span class="dim">${esc(k)}</span> ${esc(v)}</li>`).join('')}</ul>`;
+  return `        <article class="work">
+          <h3><a href="${href}">${esc(project.name)}</a> <span class="dim">- ${esc(project.status)}</span></h3>
+          ${shot}
+          <p>${esc(project.line)}</p>
+          <p class="go">${links([...project.links, { label: 'details', href }], '')}</p>
+        </article>`;
+}
+
+function section(html, id, body) {
+  const open = `<section id="${id}">`;
   const start = html.indexOf(open);
   const end = html.indexOf('</section>', start);
-  if (start === -1 || end === -1) throw new Error(`index.html needs a ${open} for the WRITING list`);
+  if (start === -1 || end === -1) throw new Error(`index.html needs a ${open}`);
+  return html.slice(0, start) + `${open}\n${body}\n      ` + html.slice(end);
+}
 
+function updateHome() {
+  const file = join(ROOT, 'index.html');
+  let html = readFileSync(file, 'utf8');
+  html = head({ title: HOME_TITLE, description: HOME_DESCRIPTION, root: '', path: '', home: true }) + html.slice(html.indexOf('</head>') + '</head>'.length);
+  html = section(html, 'work', `        <h2>Work</h2>\n${work.map(workItem).join('\n')}`);
+  html = section(html, 'more', `        <h2>More</h2>
+        <ul>
+${more.map(m => `          <li><a href="${m.href}">${esc(m.name)}</a> - ${esc(m.line)}</li>`).join('\n')}
+        </ul>`);
   const items = posts
     .slice(0, HOME_COUNT)
     .map(p => `          <li>${p.date} - <a href="blog/${p.slug}/">${esc(p.title)}</a></li>`)
     .join('\n');
-  const section = `${open}
-        <h2>Writing</h2>
+  html = section(html, 'writing', `        <h2>Writing</h2>
         <ul>
 ${items || '          <li>nothing yet</li>'}
         </ul>
-        <p><a href="blog/">all posts</a> - <a href="feed.xml">rss</a></p>
-      `;
-  writeFileSync(file, html.slice(0, start) + section + html.slice(end));
+        <p><a href="blog/">all posts</a> - <a href="feed.xml">rss</a></p>`);
+  writeFileSync(file, html);
 }
+
+const sitemap = () => {
+  const urls = [
+    ['', ''],
+    ...work.map(p => [`p/${p.slug}/`, '']),
+    ['blog/', posts[0]?.date || ''],
+    ...posts.map(p => [`blog/${p.slug}/`, p.date]),
+  ];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(([path, date]) => `  <url><loc>${SITE_URL}/${path}</loc>${date ? `<lastmod>${date}</lastmod>` : ''}</url>`).join('\n')}
+</urlset>
+`;
+};
 
 const ICON_DIR = join(ROOT, 'media', 'icons');
 const CHIP_DIR = join(ICON_DIR, 'chips');
@@ -365,6 +481,7 @@ a[href^="mailto:"] {
 }
 
 rmSync(join(ROOT, 'blog'), { recursive: true, force: true });
+rmSync(join(ROOT, 'p'), { recursive: true, force: true });
 const pages = [];
 
 posts.forEach((post, i) => {
@@ -375,12 +492,21 @@ posts.forEach((post, i) => {
   pages.push(html);
 });
 
+work.forEach((project, i) => {
+  const dir = join(ROOT, 'p', project.slug);
+  mkdirSync(dir, { recursive: true });
+  const html = projectPage(project, i);
+  writeFileSync(join(dir, 'index.html'), html);
+  pages.push(html);
+});
+
 mkdirSync(join(ROOT, 'blog'), { recursive: true });
 pages.push(indexPage());
 writeFileSync(join(ROOT, 'blog', 'index.html'), pages.at(-1));
 writeFileSync(join(ROOT, 'feed.xml'), feed());
+writeFileSync(join(ROOT, 'sitemap.xml'), sitemap());
 updateHome();
 pages.push(readFileSync(join(ROOT, 'index.html'), 'utf8'));
 
 const iconCount = await buildIcons(pages);
-console.log(`built ${posts.length} post${posts.length === 1 ? '' : 's'}: ${posts.map(p => p.slug).join(', ')}; ${iconCount} favicons`);
+console.log(`built ${posts.length} post${posts.length === 1 ? '' : 's'} and ${work.length} project pages; ${iconCount} favicons${PREVIEW ? '; preview: draft lines shown' : ''}`);
