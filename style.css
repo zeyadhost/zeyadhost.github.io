@@ -303,10 +303,6 @@ a:focus-visible {
     margin: 0 -9px;
   }
 
-  .notes a[href] {
-    padding-block: 15px;
-  }
-
   main li:has(> a) {
     padding-block: 12.5px;
   }
@@ -478,57 +474,4 @@ a:focus-visible {
 
 .post-nav a {
   color: var(--ink);
-}
-
-
-.notes {
-  margin-top: 1.2em;
-  padding-left: 2ch;
-  border-left: 1px solid #444;
-  font-size: 0.87em;
-  line-height: 1.5;
-}
-
-.notes[hidden] {
-  display: none;
-}
-
-.notes p {
-  margin: 0 0 0.8em;
-}
-
-.notes p:last-child {
-  margin-bottom: 0;
-}
-
-.notes .k {
-  display: block;
-  font-size: 0.85em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.notes a[href]::before {
-  display: none;
-}
-
-@media (min-width: 1140px) {
-  .intro {
-    display: grid;
-    grid-template-columns: 100% auto;
-    column-gap: 3.5ch;
-    align-items: start;
-
-    margin-top: 1.95em;
-  }
-
-  .intro h2 {
-    margin-top: 0;
-  }
-
-  .notes {
-    align-self: stretch;
-    width: 24ch;
-    margin-top: 0;
-  }
 }

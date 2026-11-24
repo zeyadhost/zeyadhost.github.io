@@ -27,15 +27,6 @@ const required = [
   ['meta[property="og:image"]', 'content'],
   ['meta[name="twitter:card"]', 'content'],
 ];
-const minutesAgo = m => new Date(Date.now() - m * 60000);
-const fixtures = {
-  'user.getrecenttracks': { recenttracks: { track: [{ name: 'Fixture Track', artist: { '#text': 'Fixture Artist' }, url: 'https://www.last.fm/music/Fixture', date: { uts: String(Math.floor(minutesAgo(12) / 1000)) } }] } },
-};
-const mocked = ['ws.audioscrobbler.com'];
-const redact = url => {
-  const u = new URL(url);
-  return mocked.includes(u.hostname) ? `${u.origin}${u.pathname}` : url;
-};
 
 const failures = [];
 const external = new Set();
@@ -52,27 +43,16 @@ async function check(view, path) {
   tab.on((method, p) => {
     if (method === 'Runtime.exceptionThrown') problems.push(`exception: ${p.exceptionDetails.exception?.description || p.exceptionDetails.text}`);
     if (method === 'Runtime.consoleAPICalled' && ['error', 'assert'].includes(p.type)) problems.push(`console.${p.type}: ${p.args.map(a => a.value ?? a.description).join(' ')}`);
-    if (method === 'Log.entryAdded' && p.entry.level === 'error') problems.push(`log: ${p.entry.text} ${redact(p.entry.url || 'about:blank')}`);
+    if (method === 'Log.entryAdded' && p.entry.level === 'error') problems.push(`log: ${p.entry.text} ${p.entry.url || 'about:blank'}`);
     if (method === 'Network.requestWillBeSent') {
       requests.set(p.requestId, p.request.url);
       const url = new URL(p.request.url);
-      if (/^https?:$/.test(url.protocol) && url.origin !== site.url && !mocked.includes(url.hostname)) problems.push(`external request: ${p.request.url}`);
+      if (/^https?:$/.test(url.protocol) && url.origin !== site.url) problems.push(`external request: ${p.request.url}`);
     }
-    if (method === 'Network.responseReceived' && p.response.status >= 400) problems.push(`HTTP ${p.response.status}: ${redact(p.response.url)}`);
-    if (method === 'Network.loadingFailed' && !p.canceled) problems.push(`failed: ${p.errorText} ${redact(requests.get(p.requestId))}`);
-    if (method === 'Fetch.requestPaused') {
-      const url = new URL(p.request.url);
-      const body = fixtures[url.searchParams.get('method')] || {};
-      tab.call('Fetch.fulfillRequest', {
-        requestId: p.requestId,
-        responseCode: 200,
-        responseHeaders: [{ name: 'Content-Type', value: 'application/json' }, { name: 'Access-Control-Allow-Origin', value: '*' }],
-        body: Buffer.from(JSON.stringify(body)).toString('base64'),
-      }).catch(error => problems.push(`fixture: ${error.message}`));
-    }
+    if (method === 'Network.responseReceived' && p.response.status >= 400) problems.push(`HTTP ${p.response.status}: ${p.response.url}`);
+    if (method === 'Network.loadingFailed' && !p.canceled) problems.push(`failed: ${p.errorText} ${requests.get(p.requestId)}`);
   });
   await Promise.all(['Runtime.enable', 'Log.enable', 'Network.enable', 'Page.enable'].map(m => tab.call(m)));
-  await tab.call('Fetch.enable', { patterns: mocked.map(host => ({ urlPattern: `https://${host}/*` })) });
   await tab.call('Emulation.setDeviceMetricsOverride', { width: view.width, height: view.height, deviceScaleFactor: 2, mobile: view.mobile });
   await tab.call('Emulation.setTouchEmulationEnabled', { enabled: view.mobile, maxTouchPoints: view.mobile ? 5 : 1 });
   await tab.call('Page.addScriptToEvaluateOnNewDocument', {
@@ -121,13 +101,6 @@ async function check(view, path) {
         const r = el.getBoundingClientRect();
         if (r.width && (r.height < 44 || r.width < 44)) out.errors.push(`tap target ${Math.round(r.width)}x${Math.round(r.height)}: ${el.textContent.trim().slice(0, 40)}`);
       }
-    }
-    const notes = document.querySelector('.notes:not([hidden])');
-    const story = document.querySelector('.intro-text p');
-    if (notes && story) {
-      const n = notes.getBoundingClientRect();
-      const s = story.getBoundingClientRect();
-      if (n.left > s.right && Math.abs(n.bottom - s.bottom) > 1) out.errors.push(`right-now line ends ${Math.round(n.bottom - s.bottom)}px from the about paragraph`);
     }
     const ld = document.querySelector('script[type="application/ld+json"]');
     if (ld) {
