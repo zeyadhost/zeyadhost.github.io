@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>404 - zeyad</title>
     <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#000000" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -30,6 +31,27 @@
         box-sizing: border-box;
       }
 
+      main {
+        display: grid;
+        justify-items: center;
+        gap: 2em;
+      }
+
+      p {
+        margin: 0;
+        font: 15px/1.4 "DejaVu Sans Mono", Menlo, Consolas, monospace;
+        color: #8c8c8c;
+      }
+
+      a {
+        display: inline-block;
+        padding: 12px 6px;
+        color: #f2f2f2;
+        text-decoration: underline;
+        text-decoration-color: #8c8c8c;
+        text-underline-offset: 0.16em;
+      }
+
       pre {
         margin: 0;
         font: clamp(9px, min(2.3vh, 3.9vw), 22px) / 1.15 "DejaVu Sans Mono", Menlo, Consolas, monospace;
@@ -39,6 +61,7 @@
     </style>
   </head>
   <body>
+    <main>
     <pre role="img" aria-label="Sorry, this page does not exist yet.">            SORRY
 
        This page does
@@ -66,5 +89,7 @@
   /          N            \
  /           q,            \
 /                           \</pre>
+    <p><a href="/">home</a> - <a href="/#work">work</a> - <a href="/blog/">writing</a></p>
+    </main>
   </body>
 </html>
