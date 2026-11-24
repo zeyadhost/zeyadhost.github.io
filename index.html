@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Zeyad Bekhet (zeyadhost): emulators, browser tools and circuit boards</title>
-    <meta name="description" content="Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more, with screenshots, demos and source." />
+    <meta name="description" content="Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more." />
     <meta name="theme-color" content="#000000" />
     <link rel="canonical" href="https://zeyad.is-a.dev/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="zeyad" />
     <meta property="og:title" content="Zeyad Bekhet (zeyadhost): emulators, browser tools and circuit boards" />
-    <meta property="og:description" content="Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more, with screenshots, demos and source." />
+    <meta property="og:description" content="Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more." />
     <meta property="og:url" content="https://zeyad.is-a.dev/" />
     <meta property="og:image" content="https://zeyad.is-a.dev/media/share/home.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -37,49 +37,56 @@
           i'm zeyad, <span class="age" tabindex="0" aria-describedby="age-exact"><span class="age-n">13</span><span class="age-tip" id="age-exact" role="tooltip">13.000000000000000000</span></span>, from egypt.
           i build emulators and browser tools, and i design circuit boards.
         </p>
-        <p class="go"><a href="https://github.com/zeyadhost">github</a> - <a href="mailto:zeyadhost@duck.com">email</a> - <a href="feed.xml">rss</a></p>
+        <p class="go"><a href="https://github.com/zeyadhost">github</a> - <a href="mailto:zeyadhost@duck.com">email</a></p>
       </section>
 
       <section id="work">
         <h2>Work</h2>
         <article class="work">
-          <h3><a href="p/cupertab/">cupertab</a> <span class="dim">- live demo, bring your own firmware</span></h3>
+          <h3><a href="p/cupertab/">cupertab</a></h3>
+          <p class="meta">2026-11 - live demo, needs your own firmware</p>
           <a class="shot" href="p/cupertab/" tabindex="-1"><img src="media/p/cupertab/thumb.webp" width="800" height="500" alt="ios 4.2.1 on the lock screen inside a dark browser page, with the status line running iPhone1,2_4.2.1_8C148_Restore.ipsw above it" decoding="async" /></a>
-          <p>my fork of touchhle, built to webassembly. early iphone apps run in a browser tab, and ios 4 boots from an ipsw you supply.</p>
+          <p>a port of touchhle that runs in a web browser. it started as a fork of touchhle. early iphone apps run in a tab, and ios 4 boots from an ipsw you supply.</p>
           <p class="go"><a href="https://cupertab.dino.icu/">try it</a> - <a href="https://github.com/zeyadhost/cupertab">source</a> - <a href="p/cupertab/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/picogb/">picogb</a> <span class="dim">- runs on the real sprig</span></h3>
+          <h3><a href="p/picogb/">picogb</a></h3>
+          <p class="meta">2026-10 - runs on the real sprig</p>
           <a class="shot" href="p/picogb/" tabindex="-1"><img src="media/p/picogb/thumb.webp" width="800" height="500" alt="super mario land running on the sprig&#39;s small screen, photographed on a desk next to a laptop keyboard" loading="lazy" decoding="async" /></a>
           <p>a game boy and game boy color emulator for the hack club sprig, written from scratch. blargg&#39;s cpu and timing tests pass on the real hardware.</p>
           <p class="go"><a href="https://github.com/zeyadhost/picogb">source</a> - <a href="blog/vibecoding-a-gameboy-emulator/">blog post</a> - <a href="p/picogb/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/plistcheck/">plistcheck</a> <span class="dim">- live demo</span></h3>
-          <a class="shot" href="p/plistcheck/" tabindex="-1"><img src="media/p/plistcheck/thumb.webp" width="800" height="500" alt="plistcheck&#39;s diagnostics panel: errors found, with 1 error, 9 warnings and 1 note" loading="lazy" decoding="async" /></a>
-          <p>checks your opencore config.plist against your exact hardware, right in the browser. your config never leaves your device.</p>
+          <h3><a href="p/plistcheck/">plistcheck</a></h3>
+          <p class="meta">2026-11 - live demo</p>
+          <a class="shot" href="p/plistcheck/" tabindex="-1"><img src="media/p/plistcheck/thumb.webp" width="800" height="500" alt="plistcheck with the example config loaded: errors found, 1 error, 9 warnings and 1 note, and the first four warnings" loading="lazy" decoding="async" /></a>
+          <p>checks an opencore config.plist against the hardware you pick, in the browser. the file never leaves your device.</p>
           <p class="go"><a href="https://zeyad.is-a.dev/plistcheck/">try it</a> - <a href="https://github.com/zeyadhost/plistcheck">source</a> - <a href="p/plistcheck/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/verispeed/">verispeed</a> <span class="dim">- designed, board not built yet</span></h3>
+          <h3><a href="p/verispeed/">verispeed</a></h3>
+          <p class="meta">2026-10 - designed, the board is not built yet</p>
           <a class="shot" href="p/verispeed/" tabindex="-1"><img src="media/p/verispeed/thumb.webp" width="800" height="500" alt="kicad 3d view of the verispeed board: a screen in the middle, a knob on each side and 12 key switches below" loading="lazy" decoding="async" /></a>
-          <p>a midi controller with 12 keys, 2 knobs and a screen, on one circuit board with no case. the design passes its checks, the board is not built yet.</p>
+          <p>a midi controller with 12 keys, 2 knobs and a screen, on one circuit board with no case. the design passes its checks, but the board is not built yet.</p>
           <p class="go"><a href="https://github.com/zeyadhost/verispeed">source</a> - <a href="p/verispeed/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/strata/">strata</a> <span class="dim">- jam game</span></h3>
-          <a class="shot" href="p/strata/" tabindex="-1"><img src="media/p/strata/thumb.webp" width="800" height="500" alt="a small pixel-art miner with a pickaxe standing on grass above dirt and stone" loading="lazy" decoding="async" /></a>
+          <h3><a href="p/strata/">strata</a></h3>
+          <p class="meta">2026-03 - jam game</p>
+          <a class="shot" href="p/strata/" tabindex="-1"><img src="media/p/strata/thumb.webp" width="800" height="500" alt="the miner at the bottom of a shaft dug through dirt into stone, at depth 35, with the hotbar below" loading="lazy" decoding="async" /></a>
           <p>a singleplayer mining game for the browser, built with phaser 3 for ember jam. art by coolgirlarts.</p>
           <p class="go"><a href="https://github.com/zeyadhost/strata">source</a> - <a href="p/strata/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/ios4-uikit/">ios4-uikit</a> <span class="dim">- live gallery</span></h3>
-          <a class="shot" href="p/ios4-uikit/" tabindex="-1"><img src="media/p/ios4-uikit/thumb.webp" width="800" height="500" alt="the controls section of the gallery: an off and an on switch, a slider, buttons and segmented controls" loading="lazy" decoding="async" /></a>
+          <h3><a href="p/ios4-uikit/">ios4-uikit</a></h3>
+          <p class="meta">2026-11 - live gallery</p>
+          <a class="shot" href="p/ios4-uikit/" tabindex="-1"><img src="media/p/ios4-uikit/thumb.webp" width="800" height="500" alt="the controls section of the gallery: an off and an on switch, a slider, buttons, segmented controls, a page control and progress bars" loading="lazy" decoding="async" /></a>
           <p>an interactive web catalog of the ios 4.2.1 uikit controls, rebuilt in css, svg and javascript. it ships no apple binaries, artwork or fonts.</p>
           <p class="go"><a href="https://zeyad.is-a.dev/ios4-uikit/">try it</a> - <a href="https://github.com/zeyadhost/ios4-uikit">source</a> - <a href="p/ios4-uikit/">details</a></p>
         </article>
         <article class="work">
-          <h3><a href="p/latitude-metal/">latitude 5450 metal</a> <span class="dim">- usable, not smooth yet</span></h3>
+          <h3><a href="p/latitude-metal/">latitude 5450 metal</a></h3>
+          <p class="meta">2026-11 - usable, not smooth yet</p>
           <ul class="shot spec"><li><span class="dim">laptop</span> dell latitude 5450</li><li><span class="dim">igpu</span> xe-lpg, 8086:7d45</li><li><span class="dim">macos</span> tahoe 26.7.2</li><li><span class="dim">frames</span> 25 to 35 fps</li></ul>
           <p>metal and a gpu-composited macos desktop on the meteor lake igpu of a dell latitude 5450, a gpu apple never wrote a driver for.</p>
           <p class="go"><a href="https://github.com/zeyadhost/latitude-5450-meteor-lake-macos">source</a> - <a href="p/latitude-metal/">details</a></p>
@@ -92,7 +99,7 @@
           <li><a href="https://github.com/zeyadhost/terminaldeck">terminaldeck</a> - terminal game launcher with an arduino uno as the controller</li>
           <li><a href="https://github.com/zeyadhost/hp-prodesk-600-g3-skylake-monterey-opencore">prodesk-opencore</a> - macos monterey on an hp prodesk 600 g3, as an opencore efi</li>
           <li><a href="https://github.com/zeyadhost/cortex-bot">cortex-bot</a> - python discord bot for server setup, api testing and reverse engineering, early: three commands so far</li>
-          <li><a href="https://pfetch.me">pfetch.me</a> - bio-link site where every detail is yours to change</li>
+          <li><a href="https://pfetch.me">pfetch.me</a> - bio-link site where you can change every detail</li>
           <li><a href="https://donteatthis.vercel.app">hazardous atelier</a> - a bakery of pastries made from absurd ingredients</li>
         </ul>
       </section>
@@ -100,25 +107,13 @@
       <section class="intro">
         <div class="intro-text">
           <h2>About</h2>
-          <ul>
-            <li>whoami - zeyad bekhet, aka zeyadhost</li>
-            <li>
-              uptime -
-              <span class="age" tabindex="0" aria-describedby="uptime-exact">
-                <span class="age-n">13</span> years old
-                <span class="age-tip" id="uptime-exact" role="tooltip">13.000000000000000000</span>
-              </span>
-            </li>
-            <li>location - egypt</li>
-            <li>online - since november 2022</li>
-          </ul>
           <p>
             here i am,
             <span class="age" data-since="6" tabindex="0" aria-describedby="since-exact"><span class="age-n">7</span> years<span class="age-tip" id="since-exact" role="tooltip">7.000000000000000000</span></span>
             later, still doing what i fell in love with at 6: computers. my father taught me my first
-            technical terms and how to work with them, and i've kept teaching myself ever since.
-            computers and circuits are my comfort zone: my work, my hobby, and the thing i genuinely
-            love doing. now i build hardware, full-stack tools, games, and whatever comes next.
+            technical terms and how to work with them, and i've kept teaching myself since then.
+            computers and circuits are my comfort zone. they're my work and my hobby at the same time,
+            and i love it. now i build hardware, full-stack tools and games.
           </p>
         </div>
         <aside class="notes" aria-label="Right now" hidden></aside>

@@ -6,9 +6,9 @@
       "title": "Cupertab",
       "tagline": "iOS 4 in a browser tab",
       "date": "2026-11",
-      "status": "live demo, bring your own firmware",
-      "line": "my fork of touchhle, built to webassembly. early iphone apps run in a browser tab, and ios 4 boots from an ipsw you supply.",
-      "summary": "A fork of the touchHLE emulator built to WebAssembly: early iPhone apps run in a browser tab, and iOS 4 boots from an IPSW you supply.",
+      "status": "live demo, needs your own firmware",
+      "line": "a port of touchhle that runs in a web browser. it started as a fork of touchhle. early iphone apps run in a tab, and ios 4 boots from an ipsw you supply.",
+      "summary": "Cupertab is a port of the touchHLE emulator that runs in a web browser: early iPhone apps run in a tab, and iOS 4 boots from an IPSW you supply.",
       "note": "the demo needs your own files: an iphone os 4 .ipsw plus its root filesystem key, or a decrypted .ipa you own. it ships no apple files and nothing gets uploaded.",
       "thumb": { "src": "media/p/cupertab/thumb.webp", "alt": "ios 4.2.1 on the lock screen inside a dark browser page, with the status line running iPhone1,2_4.2.1_8C148_Restore.ipsw above it" },
       "images": [
@@ -16,9 +16,9 @@
         { "src": "media/p/cupertab/page.webp", "alt": "the cupertab page: a root filesystem key field and three green buttons, choose .ipa, boot ios 4 .ipsw and add .ipa to home screen", "caption": "the page before you pick your files." }
       ],
       "body": [
-        "cupertab is my fork of [touchhle](https://github.com/touchHLE/touchHLE), a high-level emulator for early ios apps. it runs the app's own arm code and swaps ios for its own versions of the system frameworks. this fork builds it to webassembly, so it runs in a browser tab, and adds a mode that boots ios 4 from an ipsw, so apple's own springboard runs in the tab.",
-        "it was called touchhle-web until november 2026. touchhle itself is by hikari_no_yume and many contributors. please don't report problems with the web build to upstream touchhle, they don't work on this fork.",
-        "after the first boot the page saves a snapshot of the lock screen, so the next boot with the same ipsw shows it in under a second."
+        "cupertab is a port of [touchhle](https://github.com/touchHLE/touchHLE) that runs in a web browser. it started as a fork of touchhle. touchhle is a high-level emulator for early ios apps: it runs the app's own arm code and swaps ios for its own versions of the system frameworks. cupertab builds it to webassembly, and it can also boot ios 4 from an ipsw you supply, so apple's own springboard runs in the tab.",
+        "it was called touchhle-web until november 2026. touchhle was started by hikari_no_yume, and many other people have worked on it since. please don't report problems with the web build to upstream touchhle, because they don't work on cupertab.",
+        "when a boot reaches the lock screen, the page saves a snapshot of it. the next time you pick the same ipsw with the same key, the lock screen shows up in about a second in chromium."
       ],
       "facts": [
         ["runs", "apps for iphone os 2.x, 3.x and ios 4.0.x"],
@@ -89,12 +89,13 @@
       "tagline": "an OpenCore config checker in the browser",
       "date": "2026-11",
       "status": "live demo",
-      "line": "checks your opencore config.plist against your exact hardware, right in the browser. your config never leaves your device.",
-      "summary": "plistcheck runs OpenCore's official validator and hardware-specific checks on your config.plist, entirely in your browser.",
-      "note": "no config? the page has a \"try an example\" button.",
-      "thumb": { "src": "media/p/plistcheck/thumb.webp", "alt": "plistcheck's diagnostics panel: errors found, with 1 error, 9 warnings and 1 note" },
+      "line": "checks an opencore config.plist against the hardware you pick, in the browser. the file never leaves your device.",
+      "summary": "plistcheck runs OpenCore's official validator and checks for your hardware on a config.plist, all in the browser.",
+      "note": "if you don't have a config, the page has a \"try an example\" button.",
+      "thumb": { "src": "media/p/plistcheck/thumb.webp", "alt": "plistcheck with the example config loaded: errors found, 1 error, 9 warnings and 1 note, and the first four warnings" },
       "images": [
-        { "src": "media/p/plistcheck/report.webp", "alt": "plistcheck with the example coffee lake config loaded: the hardware form on the left and the report on the right, 1 error, 9 warnings and 1 note, each linked to its config path", "caption": "the report for the built-in example config." }
+        { "src": "media/p/plistcheck/overview.webp", "alt": "plistcheck with the example coffee lake config loaded: the hardware form on the left, and on the right errors found, 1 error, 9 warnings and 1 note, and the first four warnings", "caption": "the built-in example config after a check." },
+        { "src": "media/p/plistcheck/report.webp", "alt": "the whole diagnostics panel for the example config: errors found, 1 error, 9 warnings and 1 note, eleven findings each with its config path, ocvalidate output passed, and a not checked section", "caption": "the whole report for the example config." }
       ],
       "body": [
         "pick an xml or binary plist, choose your hardware and target macos, and plistcheck shows every finding with a link to its source. the official opencore 1.0.8 validator is compiled from unchanged sources to webassembly, and the hardware rules run in python through pyodide, all inside a browser worker.",
@@ -119,8 +120,8 @@
       "title": "Verispeed",
       "tagline": "a 12-key MIDI controller board",
       "date": "2026-10",
-      "status": "designed, board not built yet",
-      "line": "a midi controller with 12 keys, 2 knobs and a screen, on one circuit board with no case. the design passes its checks, the board is not built yet.",
+      "status": "designed, the board is not built yet",
+      "line": "a midi controller with 12 keys, 2 knobs and a screen, on one circuit board with no case. the design passes its checks, but the board is not built yet.",
       "summary": "A MIDI controller with 12 keys, 2 knobs and a screen, designed in KiCad around an ESP32-S3. The board is designed but not built yet.",
       "thumb": { "src": "media/p/verispeed/thumb.webp", "alt": "kicad 3d view of the verispeed board: a screen in the middle, a knob on each side and 12 key switches below" },
       "images": [
@@ -155,9 +156,9 @@
       "status": "jam game",
       "line": "a singleplayer mining game for the browser, built with phaser 3 for ember jam. art by coolgirlarts.",
       "summary": "A singleplayer mining game for the browser, built with Phaser 3 and TypeScript for Ember jam.",
-      "thumb": { "src": "media/p/strata/thumb.webp", "alt": "a small pixel-art miner with a pickaxe standing on grass above dirt and stone" },
+      "thumb": { "src": "media/p/strata/thumb.webp", "alt": "the miner at the bottom of a shaft dug through dirt into stone, at depth 35, with the hotbar below" },
       "images": [
-        { "src": "media/p/strata/run.webp", "alt": "strata at the start of a run: the miner on a grassy hill above layers of dirt and stone with ore, a hotbar with a wood pick, and settings and shop buttons", "caption": "the start of a run. ores, tiles and the player are by coolgirlarts." }
+        { "src": "media/p/strata/run.webp", "alt": "strata at depth 36: the miner in a shaft dug through dirt into stone with ore around it, a hotbar with a wood pick, and settings and shop buttons", "caption": "a shaft dug with the wood pick. ores, tiles and the player are by coolgirlarts." }
       ],
       "body": [
         "you dig down through dirt and stone, collect ore and sell it in the shop for better pickaxes. it runs in the browser and is built with vite.",
@@ -184,13 +185,13 @@
       "status": "live gallery",
       "line": "an interactive web catalog of the ios 4.2.1 uikit controls, rebuilt in css, svg and javascript. it ships no apple binaries, artwork or fonts.",
       "summary": "An interactive web catalog of the iOS 4.2.1 UIKit controls and their period styles, rebuilt in CSS, SVG and JavaScript.",
-      "thumb": { "src": "media/p/ios4-uikit/thumb.webp", "alt": "the controls section of the gallery: an off and an on switch, a slider, buttons and segmented controls" },
+      "thumb": { "src": "media/p/ios4-uikit/thumb.webp", "alt": "the controls section of the gallery: an off and an on switch, a slider, buttons, segmented controls, a page control and progress bars" },
       "images": [
-        { "src": "media/p/ios4-uikit/controls.webp", "alt": "the controls section: uiswitch, uislider, uibutton, uisegmentedcontrol, uipagecontrol and uiprogressview specimens", "caption": "controls, the first of four sections." },
-        { "src": "media/p/ios4-uikit/bars.webp", "alt": "the bars and lists section: navigation bars, toolbars, tab bars and a search bar in default and black styles", "caption": "bars and lists." }
+        { "src": "media/p/ios4-uikit/controls.webp", "alt": "the controls section: uiswitch, uislider, uibutton, uisegmentedcontrol, uipagecontrol, uiprogressview and uiactivityindicatorview specimens", "caption": "controls, the first of four sections." },
+        { "src": "media/p/ios4-uikit/bars.webp", "alt": "the bars and lists section: navigation bars, toolbars, tab bars and search bars in default, black opaque and black translucent styles", "caption": "bars and lists." }
       ],
       "body": [
-        "the specimens are css, svg and javascript recreations, not screenshots and not native uikit: switches drag, segmented controls select, pickers scroll. the class list comes from the uikit binary in the 8C148 firmware: 626 classes, including private ones, which say what exists but not how it looks.",
+        "every specimen is rebuilt in css, svg and javascript, so it is not a screenshot or native uikit. you can drag the switches, select segments and scroll the pickers. the class list comes from the uikit binary in the 8C148 firmware: 626 classes, including private ones, which say what exists but not how it looks.",
         "it is not pixel-matched against a real phone, and the coverage notes in the repo say what is missing."
       ],
       "facts": [
@@ -221,7 +222,7 @@
       ],
       "body": [
         "the stack is intel's open i915 driver running on freebsd's linuxkpi shim inside the macos kernel, with mesa's anv behind metal. windowserver composites on the intel gpu, metal renders, and the accelerated path comes up on a normal usb boot.",
-        "it is a retargeting of other people's drivers, not original silicon work: it stands on nullmoth, xegfx, arrowwhatever, samwu07's thinkbook stack, i915, linuxkpi and mesa, each listed with its commit in the repo. the cursor leaves trails and frames sit around 25 to 35 fps. porting the arrowwhatever patches is the current work.",
+        "it is built from other people's drivers, retargeted to this gpu: nullmoth, xegfx, arrowwhatever, samwu07's thinkbook stack, i915, linuxkpi and mesa, each listed with its commit in the repo. the cursor leaves trails and frames sit around 25 to 35 fps. porting the arrowwhatever patches is the current work.",
         "there is no screenshot here yet."
       ],
       "facts": [
@@ -241,7 +242,7 @@
     { "name": "terminaldeck", "href": "https://github.com/zeyadhost/terminaldeck", "line": "terminal game launcher with an arduino uno as the controller" },
     { "name": "prodesk-opencore", "href": "https://github.com/zeyadhost/hp-prodesk-600-g3-skylake-monterey-opencore", "line": "macos monterey on an hp prodesk 600 g3, as an opencore efi" },
     { "name": "cortex-bot", "href": "https://github.com/zeyadhost/cortex-bot", "line": "python discord bot for server setup, api testing and reverse engineering, early: three commands so far" },
-    { "name": "pfetch.me", "href": "https://pfetch.me", "line": "bio-link site where every detail is yours to change" },
+    { "name": "pfetch.me", "href": "https://pfetch.me", "line": "bio-link site where you can change every detail" },
     { "name": "hazardous atelier", "href": "https://donteatthis.vercel.app", "line": "a bakery of pastries made from absurd ingredients" }
   ],
   "how_i_made_it": {

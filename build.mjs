@@ -9,7 +9,7 @@ const SITE_NAME = 'zeyad';
 const AUTHOR = 'Zeyad Bekhet';
 const HOME_COUNT = 3;
 const HOME_TITLE = 'Zeyad Bekhet (zeyadhost): emulators, browser tools and circuit boards';
-const HOME_DESCRIPTION = 'Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more, with screenshots, demos and source.';
+const HOME_DESCRIPTION = 'Zeyad Bekhet builds emulators and browser tools and designs circuit boards: Cupertab, PicoGB, plistcheck, Verispeed and more.';
 const SAME_AS = ['https://github.com/zeyadhost', 'https://x.com/zeyadhost'];
 const { work, more, how_i_made_it: made } = JSON.parse(readFileSync(join(ROOT, 'projects.json'), 'utf8'));
 
@@ -315,7 +315,8 @@ function workItem(project, i) {
     ? `<a class="shot" href="${href}" tabindex="-1">${img(project.thumb.src, project.thumb.alt, '', { lazy: i > 0 })}</a>`
     : `<ul class="shot spec">${project.spec.map(([k, v]) => `<li><span class="dim">${esc(k)}</span> ${esc(v)}</li>`).join('')}</ul>`;
   return `        <article class="work">
-          <h3><a href="${href}">${esc(project.name)}</a> <span class="dim">- ${esc(project.status)}</span></h3>
+          <h3><a href="${href}">${esc(project.name)}</a></h3>
+          <p class="meta">${project.date} - ${esc(project.status)}</p>
           ${shot}
           <p>${esc(project.line)}</p>
           <p class="go">${links([...project.links, { label: 'details', href }], '')}</p>

@@ -189,12 +189,13 @@ a:focus-visible {
   text-underline-offset: 0.16em;
 }
 
-.work h3 .dim {
-  font-size: 0.87em;
-}
-
 .work p {
   margin: 0.5em 0 0;
+}
+
+.work .meta {
+  margin-top: 0.15em;
+  color: var(--dim);
 }
 
 .shot {
@@ -236,8 +237,8 @@ a:focus-visible {
   .work {
     display: grid;
     grid-template-columns: 44% 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas: "shot head" "shot line" "shot go";
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "shot head" "shot meta" "shot line" "shot go";
     column-gap: 2.5ch;
   }
 
@@ -253,6 +254,10 @@ a:focus-visible {
 
   .work p {
     grid-area: line;
+  }
+
+  .work .meta {
+    grid-area: meta;
   }
 
   .work .go {
@@ -292,16 +297,18 @@ a:focus-visible {
 }
 
 @media (pointer: coarse) {
-  li > a,
-  .notes a,
-  .crumbs a,
-  .post-nav a,
-  .work h3 a {
-    padding-block: 11.5px;
+  a:not(.prose a, .shot, .brand),
+  .age {
+    padding: 13.5px 9px;
+    margin: 0 -9px;
+  }
+
+  .notes a[href] {
+    padding-block: 15px;
   }
 
   main li:has(> a) {
-    padding-block: 11.5px;
+    padding-block: 12.5px;
   }
 }
 
