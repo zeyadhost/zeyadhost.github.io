@@ -527,6 +527,7 @@ a:focus-visible {
   }
 
   .notes {
+    align-self: stretch;
     width: 24ch;
     margin-top: 0;
   }

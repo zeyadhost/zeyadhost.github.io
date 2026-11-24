@@ -30,10 +30,8 @@ const required = [
 const minutesAgo = m => new Date(Date.now() - m * 60000);
 const fixtures = {
   'user.getrecenttracks': { recenttracks: { track: [{ name: 'Fixture Track', artist: { '#text': 'Fixture Artist' }, url: 'https://www.last.fm/music/Fixture', date: { uts: String(Math.floor(minutesAgo(12) / 1000)) } }] } },
-  'user.gettopartists': { topartists: { artist: [{ name: 'Fixture Artist', url: 'https://www.last.fm/music/Fixture', playcount: '42' }] } },
-  github: [{ type: 'PushEvent', repo: { name: 'zeyadhost/picogb' }, created_at: minutesAgo(90).toISOString() }],
 };
-const mocked = ['ws.audioscrobbler.com', 'api.github.com'];
+const mocked = ['ws.audioscrobbler.com'];
 const redact = url => {
   const u = new URL(url);
   return mocked.includes(u.hostname) ? `${u.origin}${u.pathname}` : url;
@@ -64,7 +62,7 @@ async function check(view, path) {
     if (method === 'Network.loadingFailed' && !p.canceled) problems.push(`failed: ${p.errorText} ${redact(requests.get(p.requestId))}`);
     if (method === 'Fetch.requestPaused') {
       const url = new URL(p.request.url);
-      const body = url.hostname === 'api.github.com' ? fixtures.github : fixtures[url.searchParams.get('method')] || {};
+      const body = fixtures[url.searchParams.get('method')] || {};
       tab.call('Fetch.fulfillRequest', {
         requestId: p.requestId,
         responseCode: 200,
@@ -123,6 +121,13 @@ async function check(view, path) {
         const r = el.getBoundingClientRect();
         if (r.width && (r.height < 44 || r.width < 44)) out.errors.push(`tap target ${Math.round(r.width)}x${Math.round(r.height)}: ${el.textContent.trim().slice(0, 40)}`);
       }
+    }
+    const notes = document.querySelector('.notes:not([hidden])');
+    const story = document.querySelector('.intro-text p');
+    if (notes && story) {
+      const n = notes.getBoundingClientRect();
+      const s = story.getBoundingClientRect();
+      if (n.left > s.right && Math.abs(n.bottom - s.bottom) > 1) out.errors.push(`right-now line ends ${Math.round(n.bottom - s.bottom)}px from the about paragraph`);
     }
     const ld = document.querySelector('script[type="application/ld+json"]');
     if (ld) {

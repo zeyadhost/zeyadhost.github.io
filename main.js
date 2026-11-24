@@ -55,7 +55,6 @@ for (const counter of document.querySelectorAll('.age')) {
 
 const LASTFM_USER = 'qrexxed';
 const LASTFM_KEY = 'b1bc20c465971c89487dbfd4f4ce7a5e';
-const GITHUB_USER = 'zeyadhost';
 const notes = document.querySelector('.notes');
 
 function ago(ms) {
@@ -72,8 +71,8 @@ async function getJSON(url) {
   return res.json();
 }
 
-const lastfm = (method, extra = '') =>
-  getJSON(`https://ws.audioscrobbler.com/2.0/?method=${method}&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=1${extra}`);
+const lastfm = method =>
+  getJSON(`https://ws.audioscrobbler.com/2.0/?method=${method}&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=1`);
 
 function egyptTime() {
   const now = new Date();
@@ -84,15 +83,10 @@ function egyptTime() {
 }
 
 async function loadFacts() {
-  const [recent, top, events, feed] = await Promise.allSettled([
-    lastfm('user.getrecenttracks'),
-    lastfm('user.gettopartists', '&period=7day'),
-    getJSON(`https://api.github.com/users/${GITHUB_USER}/events/public?per_page=10`),
-    fetch('feed.xml').then(r => r.text()),
-  ]);
+  const recent = await lastfm('user.getrecenttracks').catch(() => null);
   const facts = [];
 
-  const track = recent.value?.recenttracks?.track?.[0];
+  const track = recent?.recenttracks?.track?.[0];
   if (track) {
     const playing = track['@attr']?.nowplaying === 'true';
     facts.push({
@@ -103,38 +97,7 @@ async function loadFacts() {
     });
   }
 
-  const artist = top.value?.topartists?.artist?.[0];
-  if (artist) {
-    facts.push({ key: 'on repeat', value: artist.name, href: artist.url, note: `${artist.playcount} plays this week` });
-  }
-
-  const pushes = Array.isArray(events.value)
-    ? events.value.filter(e => e.type === 'PushEvent' && e.repo.name !== `${GITHUB_USER}/${GITHUB_USER}`)
-    : [];
-  const push = pushes.sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
-  if (push) {
-    facts.push({
-      key: 'last push',
-      value: push.repo.name.replace(`${GITHUB_USER}/`, ''),
-      href: `https://github.com/${push.repo.name}`,
-      note: ago(Date.parse(push.created_at)),
-    });
-  }
-
   facts.push({ key: 'local time', ...egyptTime(), clock: true });
-
-  const rss = feed.value && new DOMParser().parseFromString(feed.value, 'text/xml');
-  const post = rss?.querySelector('item');
-  if (post) {
-    const site = rss.querySelector('channel > link').textContent;
-    const link = post.querySelector('link').textContent;
-    facts.push({
-      key: 'latest post',
-      value: post.querySelector('title').textContent,
-      href: link.startsWith(site) ? link.slice(site.length) : link,
-      note: ago(Date.parse(post.querySelector('pubDate').textContent)),
-    });
-  }
 
   return facts;
 }
